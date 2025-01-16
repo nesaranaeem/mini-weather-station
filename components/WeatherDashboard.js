@@ -83,31 +83,33 @@ export default function WeatherDashboard() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-black">
         <RadialMeter
           value={latestData.temperature}
           max={50}
           title={t("dashboard.temperature")}
           unit="°C"
-          icon={<FaThermometerHalf className="text-2xl dark:text-white" />}
+          icon={
+            <FaThermometerHalf className="text-2xl text-black dark:text-white" />
+          }
         />
         <RadialMeter
           value={latestData.humidity}
           max={100}
           title={t("dashboard.humidity")}
           unit="%"
-          icon={<FaTint className="text-2xl dark:text-white" />}
+          icon={<FaTint className="text-2xl text-black dark:text-white" />}
         />
         <RadialMeter
           value={realFeel}
           max={50}
           title={t("dashboard.realFeel")}
           unit="°C"
-          icon={<FaWind className="text-2xl dark:text-white" />}
+          icon={<FaWind className="text-2xl text-black dark:text-white" />}
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-black">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4 dark:text-white">
             {t("dashboard.gasValue")}
@@ -118,8 +120,8 @@ export default function WeatherDashboard() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4 dark:text-white">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-black">
+          <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">
             {t("dashboard.soundStatus")}
           </h2>
           <div
