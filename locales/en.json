@@ -1,0 +1,21 @@
+{
+  "dashboard": {
+    "title": "Weather Station Dashboard",
+    "realTimeIndicator": "Viewing Real-Time Data",
+    "realtime": "Real-time Data",
+    "historical": "Historical Data",
+    "noData": "No data available",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "realFeel": "Real Feel",
+    "gasValue": "Gas Level",
+    "soundStatus": "Sound Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "averages": "Hourly Averages",
+    "selectDate": "Select Date",
+    "selectHour": "Select Hour",
+    "availableRange": "Available data range",
+    "noDateRange": "No historical data available"
+  }
+}
