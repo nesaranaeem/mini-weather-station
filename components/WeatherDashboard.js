@@ -237,20 +237,12 @@ export default function WeatherDashboard() {
       </div>
 
       <div className="mb-8">
-        <div className="flex justify-center items-center mb-4">
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => {
-              setSelectedDate(date);
-              fetchDataForDate(date);
-            }}
-            minDate={data.dateRange ? new Date(data.dateRange.minDate) : null}
-            maxDate={data.dateRange ? new Date(data.dateRange.maxDate) : null}
-            dateFormat="dd MMM yyyy"
-            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
-          />
-        </div>
-        <HistoricalData data={data.hourlyAverages} />
+        <HistoricalData 
+          data={data.hourlyAverages}
+          dateRange={data.dateRange}
+          onDateChange={fetchDataForDate}
+          selectedDate={selectedDate}
+        />
       </div>
     </div>
   );

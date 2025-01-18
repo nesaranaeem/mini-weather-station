@@ -25,7 +25,7 @@ ChartJS.register(
   Legend
 );
 
-export default function HistoricalData({ data }) {
+export default function HistoricalData({ data, dateRange, onDateChange, selectedDate }) {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
 
@@ -76,9 +76,19 @@ export default function HistoricalData({ data }) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
       <h2 className="text-xl font-semibold mb-6 text-center">
-        <span className="block text-gray-900 dark:text-white">
+        <span className="block text-gray-900 dark:text-white mb-4">
           {i18n.language === 'en' ? 'Hourly Averages' : 'ঘণ্টার গড়'}
         </span>
+        <div className="flex justify-center items-center">
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => onDateChange(date)}
+            minDate={dateRange ? new Date(dateRange.minDate) : null}
+            maxDate={dateRange ? new Date(dateRange.maxDate) : null}
+            dateFormat="dd MMM yyyy"
+            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
+          />
+        </div>
       </h2>
       {loading && (
         <div className="flex justify-center items-center h-32">
