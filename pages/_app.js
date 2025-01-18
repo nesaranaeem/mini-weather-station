@@ -1,8 +1,8 @@
-import '@/styles/globals.css'
-import '../utils/i18n';
-import { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import "@/styles/globals.css";
+import "../utils/i18n";
+import { useEffect, useState } from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function App({ Component, pageProps }) {
@@ -10,22 +10,26 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     // Check for dark mode preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
       setDarkMode(true);
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
       setDarkMode(false);
     }
   }, []);
 
   const toggleDarkMode = () => {
     if (darkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
+      document.documentElement.classList.remove("dark");
+      localStorage.theme = "light";
     } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
+      document.documentElement.classList.add("dark");
+      localStorage.theme = "dark";
     }
     setDarkMode(!darkMode);
   };
