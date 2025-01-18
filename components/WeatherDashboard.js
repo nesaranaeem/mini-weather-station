@@ -76,8 +76,8 @@ export default function WeatherDashboard() {
           {t("dashboard.title")}
         </h1>
         <div className="mt-2 text-gray-600 dark:text-gray-400 flex items-center justify-center">
-          {formatInTimeZone(
-            new Date(data.timestamp),
+          {data.realtime?.length > 0 && formatInTimeZone(
+            new Date(data.realtime[data.realtime.length - 1].timestamp),
             localStorage.getItem('timezone') || 'UTC',
             "'Viewing data for' HH:mm, dd MMM yyyy"
           )}
