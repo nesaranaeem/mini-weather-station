@@ -27,7 +27,8 @@
     "sunset": "Sunset",
     "dayLength": "Day Length",
     "dataSource": "Data provided by sunrise-sunset.org",
-    "hours": "hours"
+    "hours": "hours",
+    "loading": "Loading sunrise and sunset data..."
   },
   "preferences": {
     "welcome": "Welcome to Weather Station",

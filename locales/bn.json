@@ -27,7 +27,8 @@
     "sunset": "সূর্যাস্ত",
     "dayLength": "দিনের দৈর্ঘ্য",
     "dataSource": "তথ্যসূত্র: sunrise-sunset.org",
-    "hours": "ঘণ্টা"
+    "hours": "ঘণ্টা",
+    "loading": "সূর্যোদয় এবং সূর্যাস্তের তথ্য লোড হচ্ছে..."
   },
   "preferences": {
     "welcome": "আবহাওয়া স্টেশনে স্বাগতম",

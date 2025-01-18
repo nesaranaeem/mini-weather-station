@@ -183,11 +183,16 @@ export default function WeatherDashboard() {
       </div>
 
       {/* Sunrise & Sunset Section */}
-      {loading ? (
+      {loading || !sunData ? (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
-          <LoadingSpinner />
+          <div className="flex flex-col items-center">
+            <LoadingSpinner size="large" />
+            <p className="mt-4 text-gray-600 dark:text-gray-400">
+              {t("sunriseSunset.loading")}
+            </p>
+          </div>
         </div>
-      ) : sunData && (
+      ) : (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
           <h2 className="text-xl font-semibold mb-6 dark:text-white flex items-center justify-between">
             <span className="flex items-center">
