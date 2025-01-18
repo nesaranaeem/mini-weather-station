@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
-import { FaThermometerHalf, FaTint, FaWind } from "react-icons/fa";
+import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon } from "react-icons/fa";
+import { getSunriseSunset } from "../utils/sunrise-sunset";
 import RadialMeter from "./RadialMeter";
 import HistoricalData from "./HistoricalData";
 
@@ -11,11 +12,12 @@ export default function WeatherDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRealTime, setIsRealTime] = useState(false);
+  const [sunData, setSunData] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAllData = async () => {
       try {
-        console.log("Fetching sensor data...");
+        // Fetch sensor data
         const response = await fetch("/api/sensor-data", {
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
@@ -31,6 +33,10 @@ export default function WeatherDashboard() {
 
         setData(result);
         setIsRealTime(result.realtime?.length > 0);
+        // Fetch sunrise-sunset data
+        const sunriseData = await getSunriseSunset();
+        setSunData(sunriseData);
+        
         setLoading(false);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -39,8 +45,8 @@ export default function WeatherDashboard() {
       }
     };
 
-    fetchData();
-    const interval = setInterval(fetchData, 5000); // Update every 5 seconds
+    fetchAllData();
+    const interval = setInterval(fetchAllData, 5000); // Update every 5 seconds
     console.log("Data fetch interval set");
 
     return () => {
@@ -109,6 +115,37 @@ export default function WeatherDashboard() {
           icon={<FaWind className="text-2xl text-black dark:text-white" />}
         />
       </div>
+
+      {sunData && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4 dark:text-white flex items-center">
+            <FaSun className="mr-2" /> Sunrise & Sunset
+            <span className="text-sm font-normal ml-2 text-gray-600 dark:text-gray-400">
+              (Timezone: {sunData.timezone})
+            </span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center">
+              <FaSun className="text-yellow-500 mr-2" />
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Sunrise</div>
+                <div className="text-lg font-semibold dark:text-white">
+                  {new Date(sunData.sunrise).toLocaleTimeString()}
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <FaMoon className="text-gray-600 dark:text-gray-400 mr-2" />
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Sunset</div>
+                <div className="text-lg font-semibold dark:text-white">
+                  {new Date(sunData.sunset).toLocaleTimeString()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-black">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
