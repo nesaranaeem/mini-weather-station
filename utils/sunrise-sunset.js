@@ -1,6 +1,9 @@
 const BASE_URL = 'https://api.sunrise-sunset.org/json';
 
-export async function getSunriseSunset(lat = 36.7201600, lng = -4.4203400) {
+export async function getSunriseSunset(
+  lat = process.env.NEXT_PUBLIC_DEFAULT_LATITUDE, 
+  lng = process.env.NEXT_PUBLIC_DEFAULT_LONGITUDE
+) {
   try {
     const timezone = localStorage.getItem('timezone') || 'Asia/Dhaka';
     const url = `${BASE_URL}?lat=${lat}&lng=${lng}&formatted=0&tzid=${timezone}`;
