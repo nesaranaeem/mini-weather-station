@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import { useTranslation } from "react-i18next";
+import DatePicker from "react-datepicker";
 import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
 import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon, FaClock } from "react-icons/fa";
 import { getSunriseSunset } from "../utils/sunrise-sunset";
