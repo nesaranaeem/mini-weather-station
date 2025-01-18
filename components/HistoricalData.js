@@ -28,8 +28,9 @@ ChartJS.register(
 export default function HistoricalData({ data }) {
   const { t } = useTranslation();
   const [dateRange, setDateRange] = useState({ min: null, max: null });
+  const today = new Date();
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
+    today.toISOString().split("T")[0]
   );
   const [loading, setLoading] = useState(true);
 

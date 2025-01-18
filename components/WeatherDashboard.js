@@ -134,7 +134,7 @@ export default function WeatherDashboard() {
           <LoadingSpinner />
         </div>
       ) : sunData && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8 transform transition-all hover:shadow-lg">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
           <h2 className="text-xl font-semibold mb-6 dark:text-white flex items-center justify-between">
             <span className="flex items-center">
               <FaSun className="mr-2 text-yellow-500" /> {t("sunriseSunset.title")}
@@ -144,7 +144,7 @@ export default function WeatherDashboard() {
             </span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4 transform transition-all hover:scale-105">
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4">
               <div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full">
                 <FaSun className="text-yellow-500 text-xl" />
               </div>
@@ -155,7 +155,7 @@ export default function WeatherDashboard() {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4 transform transition-all hover:scale-105">
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4">
               <div className="bg-indigo-100 dark:bg-indigo-900 p-3 rounded-full">
                 <FaMoon className="text-indigo-500 text-xl" />
               </div>
@@ -166,7 +166,7 @@ export default function WeatherDashboard() {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4 transform transition-all hover:scale-105">
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4">
               <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
                 <FaClock className="text-blue-500 text-xl" />
               </div>
