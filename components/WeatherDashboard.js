@@ -10,10 +10,32 @@ import HistoricalData from "./HistoricalData";
 export default function WeatherDashboard() {
   const { t } = useTranslation();
   const [data, setData] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRealTime, setIsRealTime] = useState(false);
   const [sunData, setSunData] = useState(null);
+
+  const fetchDataForDate = async (date) => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/sensor-data?date=${date.toISOString().split('T')[0]}`, {
+        headers: {
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      });
+      const result = await response.json();
+      setData(prevData => ({
+        ...prevData,
+        hourlyAverages: result.hourlyAverages
+      }));
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching data for date:", err);
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -213,7 +235,32 @@ export default function WeatherDashboard() {
         </div>
       </div>
 
-      <HistoricalData data={data.hourlyAverages} />
+      <div className="mb-8">
+        <div className="flex justify-center items-center mb-4">
+          <select
+            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
+            onChange={(e) => {
+              const selectedDate = new Date(e.target.value);
+              // Fetch data for selected date
+              fetchDataForDate(selectedDate);
+            }}
+            value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
+          >
+            {data.dateRange && Array.from({ 
+              length: (new Date(data.dateRange.maxDate) - new Date(data.dateRange.minDate)) / (1000 * 60 * 60 * 24) + 1 
+            }).map((_, index) => {
+              const date = new Date(data.dateRange.minDate);
+              date.setDate(date.getDate() + index);
+              return (
+                <option key={date.toISOString()} value={date.toISOString().split('T')[0]}>
+                  {formatInTimeZone(date, localStorage.getItem('timezone') || 'UTC', 'dd MMM yyyy')}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <HistoricalData data={data.hourlyAverages} />
+      </div>
     </div>
   );
 }
