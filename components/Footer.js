@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 export default function Footer() {
   return (
@@ -8,16 +7,16 @@ export default function Footer() {
         <div className="flex flex-col items-center space-y-4">
           <div className="flex space-x-6">
             <a href="https://facebook.com/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 transition-colors">
-              <FontAwesomeIcon icon={faFacebook} size="lg" />
+              <FaFacebook size={24} />
             </a>
             <a href="https://github.com/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 transition-colors">
-              <FontAwesomeIcon icon={faGithub} size="lg" />
+              <FaGithub size={24} />
             </a>
             <a href="https://instagram.com/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-700 transition-colors">
-              <FontAwesomeIcon icon={faInstagram} size="lg" />
+              <FaInstagram size={24} />
             </a>
             <a href="https://linkedin.com/in/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-600 transition-colors">
-              <FontAwesomeIcon icon={faLinkedin} size="lg" />
+              <FaLinkedin size={24} />
             </a>
           </div>
           <div className="text-center text-gray-600 dark:text-gray-300">
