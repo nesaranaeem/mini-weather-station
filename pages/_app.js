@@ -7,9 +7,17 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function App({ Component, pageProps }) {
   const [darkMode, setDarkMode] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    // Check for dark mode preference
+    if (typeof window !== 'undefined') {
+      const hasPreferences = localStorage.getItem('preferredLanguage') && localStorage.getItem('timezone');
+      if (!hasPreferences) {
+        setShowPreferences(true);
+      }
+      setInitialized(true);
+    }
     if (
       localStorage.theme === "dark" ||
       (!("theme" in localStorage) &&
