@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import "../utils/i18n";
+import i18n from "../utils/i18n";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -45,7 +45,13 @@ export default function App({ Component, pageProps }) {
 
   const handlePreferencesSave = (language, timezone) => {
     i18n.changeLanguage(language);
+    localStorage.setItem('preferredLanguage', language);
+    localStorage.setItem('timezone', timezone);
     setShowPreferences(false);
+  };
+
+  const openPreferences = () => {
+    setShowPreferences(true);
   };
 
   if (!initialized) {
@@ -54,7 +60,11 @@ export default function App({ Component, pageProps }) {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 flex flex-col">
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <Header 
+        darkMode={darkMode} 
+        toggleDarkMode={toggleDarkMode}
+        onOpenPreferences={() => setShowPreferences(true)}
+      />
       <main className="flex-grow container mx-auto px-4 py-8 dark:bg-gray-950">
         <Component {...pageProps} />
       </main>

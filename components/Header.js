@@ -1,8 +1,8 @@
-import { FaSun, FaMoon } from "react-icons/fa";
+import { FaSun, FaMoon, FaCog } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
-export default function Header({ darkMode, toggleDarkMode }) {
+export default function Header({ darkMode, toggleDarkMode, onOpenPreferences }) {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -35,10 +35,11 @@ export default function Header({ darkMode, toggleDarkMode }) {
               )}
             </button>
             <button
-              onClick={toggleLanguage}
-              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium text-sm transition-colors"
+              onClick={onOpenPreferences}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              aria-label="Open Preferences"
             >
-              {language === "en" ? "বাংলা" : "English"}
+              <FaCog className="w-5 h-5 text-gray-700 dark:text-gray-200" />
             </button>
           </div>
         </div>
