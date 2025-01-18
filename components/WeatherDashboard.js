@@ -2,9 +2,19 @@ import { useState, useEffect } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
-import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
-import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon, FaClock, FaCircle, FaMicrochip, FaMapMarkerAlt } from "react-icons/fa";
-import anime from 'animejs';
+import { formatInTimeZone } from "date-fns-tz";
+import {
+  FaThermometerHalf,
+  FaTint,
+  FaWind,
+  FaSun,
+  FaMoon,
+  FaClock,
+  FaCircle,
+  FaMicrochip,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+import anime from "animejs";
 import { getSunriseSunset } from "../utils/sunrise-sunset";
 import RadialMeter from "./RadialMeter";
 import HistoricalData from "./HistoricalData";
@@ -21,15 +31,18 @@ export default function WeatherDashboard() {
   const fetchDataForDate = async (date) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/sensor-data?date=${date.toISOString().split('T')[0]}`, {
-        headers: {
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-        },
-      });
+      const response = await fetch(
+        `/api/sensor-data?date=${date.toISOString().split('T')[0]}`,
+        {
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+        }
+      );
       const result = await response.json();
-      setData(prevData => ({
+      setData((prevData) => ({
         ...prevData,
-        hourlyAverages: result.hourlyAverages
+        hourlyAverages: result.hourlyAverages,
       }));
       setLoading(false);
     } catch (err) {
@@ -42,11 +55,11 @@ export default function WeatherDashboard() {
   useEffect(() => {
     // Animate the live dot
     const animation = anime({
-      targets: '.live-dot',
+      targets: ".live-dot",
       opacity: [0.2, 1],
-      easing: 'easeInOutSine',
+      easing: "easeInOutSine",
       duration: 1000,
-      loop: true
+      loop: true,
     });
 
     // Listen for preferences changes
@@ -58,7 +71,7 @@ export default function WeatherDashboard() {
       }, 500);
     };
 
-    window.addEventListener('preferencesChanged', handlePreferencesChange);
+    window.addEventListener("preferencesChanged", handlePreferencesChange);
 
     const fetchAllData = async () => {
       try {
@@ -78,10 +91,11 @@ export default function WeatherDashboard() {
 
         setData(result);
         setIsRealTime(result.realtime?.length > 0);
+
         // Fetch sunrise-sunset data
         const sunriseData = await getSunriseSunset();
         setSunData(sunriseData);
-        
+
         setLoading(false);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -97,18 +111,19 @@ export default function WeatherDashboard() {
     return () => {
       console.log("Cleaning up interval");
       clearInterval(interval);
-      window.removeEventListener('preferencesChanged', handlePreferencesChange);
+      window.removeEventListener("preferencesChanged", handlePreferencesChange);
     };
   }, []);
 
-  if (loading) return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <LoadingSpinner size="large" />
-      <p className="mt-4 text-gray-600 dark:text-gray-400">
-        {t("dashboard.loading")}
-      </p>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <LoadingSpinner size="large" />
+        <p className="mt-4 text-gray-600 dark:text-gray-400">
+          {t("dashboard.loading")}
+        </p>
+      </div>
+    );
   if (error) return <div className="text-center p-8 text-red-500">{error}</div>;
   if (!data || (!data.realtime?.length && !data.hourlyAverages?.length)) {
     return <div className="text-center p-8">{t("dashboard.noData")}</div>;
@@ -129,24 +144,29 @@ export default function WeatherDashboard() {
   const gasType = identifyGas(latestData.gasValue);
 
   return (
-    <div className="container mx-auto p-4 dark:bg-gray-950">
-      <div className="text-center mb-4 md:mb-8 relative overflow-hidden p-4 md:p-8 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
+    <div className="container mx-auto p-4 bg-gray-100 dark:bg-gray-950">
+      <div className="text-center mb-4 md:mb-8 relative overflow-hidden p-4 md:p-8 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 dark:from-blue-700 dark:via-purple-700 dark:to-pink-700">
+        <div className="absolute inset-0 bg-black opacity-10 dark:opacity-30"></div>
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 relative z-10 animate-title">
           {t("dashboard.title")}
         </h1>
-        <p className="text-xs md:text-sm text-white/80 mb-2 md:mb-4 relative z-10">
+        <p className="text-xs md:text-sm text-white/80 dark:text-white/80 mb-2 md:mb-4 relative z-10">
           Developed and coded by Nesar Ahmed Naeem
         </p>
-        <div className="mt-1 md:mt-2 text-white/90 relative z-10">
+        <div className="mt-1 md:mt-2 text-white/90 dark:text-white/90 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-center mb-2 animate-fadeIn space-y-2 md:space-y-0">
             {data.realtime?.length > 0 && (
               <div className="flex items-center justify-center">
-                <FaCircle className="text-green-500 mr-2 live-dot" style={{ fontSize: '8px' }} />
+                <FaCircle
+                  className="text-green-500 mr-2 live-dot"
+                  style={{ fontSize: "8px" }}
+                />
                 <span className="text-xs md:text-sm">
                   {formatInTimeZone(
-                    new Date(data.realtime[data.realtime.length - 1].timestamp),
-                    localStorage.getItem('timezone') || 'UTC',
+                    new Date(
+                      data.realtime[data.realtime.length - 1].timestamp
+                    ),
+                    localStorage.getItem("timezone") || "UTC",
                     "'Viewing data for' HH:mm, dd MMM yyyy"
                   )}
                 </span>
@@ -166,7 +186,7 @@ export default function WeatherDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-black">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-black dark:text-white">
         <RadialMeter
           value={latestData.temperature}
           max={50}
@@ -195,12 +215,12 @@ export default function WeatherDashboard() {
       {/* Historical Data Chart */}
       <div className="mb-8">
         {loading ? (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow p-6">
             <LoadingSpinner />
           </div>
         ) : (
-          <HistoricalData 
-            data={data.hourlyAverages} 
+          <HistoricalData
+            data={data.hourlyAverages}
             showDatePicker={false}
             selectedDate={new Date()}
           />
@@ -209,7 +229,7 @@ export default function WeatherDashboard() {
 
       {/* Sunrise & Sunset Section */}
       {loading || !sunData ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow p-6 mb-8">
           <div className="flex flex-col items-center">
             <LoadingSpinner size="large" />
             <p className="mt-4 text-gray-600 dark:text-gray-400">
@@ -218,8 +238,8 @@ export default function WeatherDashboard() {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-6 dark:text-white flex items-center justify-between">
+        <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-6 text-black dark:text-white flex items-center justify-between">
             <span className="flex items-center">
               <FaSun className="mr-2 text-yellow-500" /> {t("sunriseSunset.title")}
             </span>
@@ -233,9 +253,15 @@ export default function WeatherDashboard() {
                 <FaSun className="text-yellow-500 text-xl" />
               </div>
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.sunrise")}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {t("sunriseSunset.sunrise")}
+                </div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {formatInTimeZone(new Date(sunData.sunrise), sunData.timezone, 'HH:mm')}
+                  {formatInTimeZone(
+                    new Date(sunData.sunrise),
+                    sunData.timezone,
+                    "HH:mm"
+                  )}
                 </div>
               </div>
             </div>
@@ -244,9 +270,15 @@ export default function WeatherDashboard() {
                 <FaMoon className="text-indigo-500 text-xl" />
               </div>
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.sunset")}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {t("sunriseSunset.sunset")}
+                </div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {formatInTimeZone(new Date(sunData.sunset), sunData.timezone, 'HH:mm')}
+                  {formatInTimeZone(
+                    new Date(sunData.sunset),
+                    sunData.timezone,
+                    "HH:mm"
+                  )}
                 </div>
               </div>
             </div>
@@ -255,9 +287,12 @@ export default function WeatherDashboard() {
                 <FaClock className="text-blue-500 text-xl" />
               </div>
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.dayLength")}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {t("sunriseSunset.dayLength")}
+                </div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {(sunData.day_length / 3600).toFixed(1)} {t("sunriseSunset.hours")}
+                  {(sunData.day_length / 3600).toFixed(1)}{" "}
+                  {t("sunriseSunset.hours")}
                 </div>
               </div>
             </div>
@@ -268,9 +303,9 @@ export default function WeatherDashboard() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-black">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4 dark:text-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-black dark:text-white">
+        <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">
             {t("dashboard.gasValue")}
           </h2>
           <div className="text-3xl font-bold dark:text-white">{gasType}</div>
@@ -279,7 +314,7 @@ export default function WeatherDashboard() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-black">
+        <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">
             {t("dashboard.soundStatus")}
           </h2>
@@ -298,7 +333,7 @@ export default function WeatherDashboard() {
       </div>
 
       <div className="mb-8">
-        <HistoricalData 
+        <HistoricalData
           data={data.hourlyAverages}
           dateRange={data.dateRange}
           onDateChange={fetchDataForDate}
@@ -309,6 +344,9 @@ export default function WeatherDashboard() {
   );
 }
 
+// ---------------------
+// Utility Functions
+// ---------------------
 function calculateRealFeel(temperature, humidity) {
   // Heat index calculation using Steadman's formula
   const T = temperature;
@@ -340,4 +378,4 @@ function identifyGas(value) {
   if (value <= 500) return "Methane";
   if (value <= 700) return "Smoke";
   return "High Gas";
-}
+                  }
