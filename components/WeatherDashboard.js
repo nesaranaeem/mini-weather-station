@@ -147,7 +147,11 @@ export default function WeatherDashboard() {
             <LoadingSpinner />
           </div>
         ) : (
-          <HistoricalData data={data.hourlyAverages} />
+          <HistoricalData 
+            data={data.hourlyAverages} 
+            showDatePicker={false}
+            selectedDate={new Date()}
+          />
         )}
       </div>
 

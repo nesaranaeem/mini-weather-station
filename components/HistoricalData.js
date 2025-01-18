@@ -25,7 +25,7 @@ ChartJS.register(
   Legend
 );
 
-export default function HistoricalData({ data, dateRange, onDateChange, selectedDate }) {
+export default function HistoricalData({ data, dateRange, onDateChange, selectedDate, showDatePicker = true }) {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
 
@@ -79,16 +79,18 @@ export default function HistoricalData({ data, dateRange, onDateChange, selected
         <span className="block text-gray-900 dark:text-white mb-4">
           {i18n.language === 'en' ? 'Hourly Averages' : 'ঘণ্টার গড়'}
         </span>
-        <div className="flex justify-center items-center">
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => onDateChange(date)}
-            minDate={dateRange ? new Date(dateRange.minDate) : null}
-            maxDate={dateRange ? new Date(dateRange.maxDate) : null}
-            dateFormat="dd MMM yyyy"
-            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
-          />
-        </div>
+        {showDatePicker && (
+          <div className="flex justify-center items-center">
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => onDateChange(date)}
+              minDate={dateRange ? new Date(dateRange.minDate) : null}
+              maxDate={dateRange ? new Date(dateRange.maxDate) : null}
+              dateFormat="dd MMM yyyy"
+              className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
+            />
+          </div>
+        )}
       </h2>
       {loading && (
         <div className="flex justify-center items-center h-32">
