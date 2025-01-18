@@ -49,6 +49,17 @@ export default function WeatherDashboard() {
       loop: true
     });
 
+    // Listen for preferences changes
+    const handlePreferencesChange = () => {
+      setLoading(true);
+      // Refetch data after a short delay
+      setTimeout(() => {
+        fetchAllData();
+      }, 500);
+    };
+
+    window.addEventListener('preferencesChanged', handlePreferencesChange);
+
     const fetchAllData = async () => {
       try {
         // Fetch sensor data
@@ -86,10 +97,18 @@ export default function WeatherDashboard() {
     return () => {
       console.log("Cleaning up interval");
       clearInterval(interval);
+      window.removeEventListener('preferencesChanged', handlePreferencesChange);
     };
   }, []);
 
-  if (loading) return <div className="text-center p-8">Loading...</div>;
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <LoadingSpinner size="large" />
+      <p className="mt-4 text-gray-600 dark:text-gray-400">
+        {t("dashboard.loading")}
+      </p>
+    </div>
+  );
   if (error) return <div className="text-center p-8 text-red-500">{error}</div>;
   if (!data || (!data.realtime?.length && !data.hourlyAverages?.length)) {
     return <div className="text-center p-8">{t("dashboard.noData")}</div>;

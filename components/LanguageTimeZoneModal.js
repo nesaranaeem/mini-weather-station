@@ -8,6 +8,10 @@ export default function LanguageTimeZoneModal({ isOpen, onClose, onSave }) {
   const [selectedTimezone, setSelectedTimezone] = useState('Asia/Dhaka'); // GMT+6
 
   const handleSave = () => {
+    // Trigger a custom event for timezone/language change
+    const event = new Event('preferencesChanged');
+    window.dispatchEvent(event);
+    
     localStorage.setItem('preferredLanguage', selectedLanguage);
     localStorage.setItem('timezone', selectedTimezone);
     onSave(selectedLanguage, selectedTimezone);

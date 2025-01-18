@@ -18,7 +18,8 @@
     "availableRange": "Available data range",
     "noDateRange": "No historical data available",
     "sensorLocation": "Sensor Location: Living Room",
-    "cpuType": "CPU: ESP8266"
+    "cpuType": "CPU: ESP8266",
+    "loading": "Updating dashboard data..."
   },
   "sunriseSunset": {
     "title": "Sunrise & Sunset",
