@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useTranslation } from "react-i18next";
 import { Bar } from "react-chartjs-2";
-import { format, parseISO } from "date-fns"; // NOTE: Use 'date-fns' not 'date-fns/format'
-import { formatInTimeZone } from "date-fns-tz"; // NOTE: Use 'date-fns-tz' not 'date-fns-tz/formatInTimeZone'
+import { format, parseISO } from "date-fns"; 
+import { formatInTimeZone } from "date-fns-tz";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  BarElement,
+  BarController,
   PointElement,
   LineElement,
   Title,
@@ -18,6 +20,8 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  BarElement,    // <-- Important for Bar charts
+  BarController, // <-- Also required for Bar charts
   PointElement,
   LineElement,
   Title,
@@ -40,18 +44,14 @@ export default function HistoricalData({
     return () => clearTimeout(timer);
   }, []);
 
-  // Pull the current timezone from localStorage; fallback to 'UTC'
   const timezone = typeof window !== "undefined"
     ? localStorage.getItem("timezone") || "UTC"
     : "UTC";
 
   // Build a Date object from each record's `date` + `hour`
-  // Then format that date in the user's chosen timezone
   const chartLabels = data.map((d) => {
-    // Each d has d.date (a Date) and d.hour (0-23)
     const dateObj = new Date(d.date);
-    dateObj.setHours(d.hour, 0, 0, 0); // set hour on that date
-    // Now we format it in the chosen timezone
+    dateObj.setHours(d.hour, 0, 0, 0);
     return formatInTimeZone(dateObj, timezone, "HH:mm");
   });
 
@@ -85,9 +85,7 @@ export default function HistoricalData({
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        position: "top",
-      },
+      legend: { position: "top" },
       title: {
         display: true,
         text: t("dashboard.averages"),
@@ -129,4 +127,4 @@ export default function HistoricalData({
       )}
     </div>
   );
-}
+        }
