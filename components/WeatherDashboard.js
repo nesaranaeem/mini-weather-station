@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import LoadingSpinner from "./LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
 import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon, FaClock } from "react-icons/fa";
@@ -116,39 +117,63 @@ export default function WeatherDashboard() {
         />
       </div>
 
-      {sunData && (
+      {/* Historical Data Chart */}
+      <div className="mb-8">
+        {loading ? (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <HistoricalData data={data.hourlyAverages} />
+        )}
+      </div>
+
+      {/* Sunrise & Sunset Section */}
+      {loading ? (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4 dark:text-white flex items-center">
-            <FaSun className="mr-2" /> {t("sunriseSunset.title")}
+          <LoadingSpinner />
+        </div>
+      ) : sunData && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8 transform transition-all hover:shadow-lg">
+          <h2 className="text-xl font-semibold mb-6 dark:text-white flex items-center justify-between">
+            <span className="flex items-center">
+              <FaSun className="mr-2 text-yellow-500" /> {t("sunriseSunset.title")}
+            </span>
             <span className="text-sm font-normal ml-2 text-gray-600 dark:text-gray-400">
               ({t("sunriseSunset.timezone")}: {sunData.timezone})
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center">
-              <FaSun className="text-yellow-500 mr-2" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4 transform transition-all hover:scale-105">
+              <div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full">
+                <FaSun className="text-yellow-500 text-xl" />
+              </div>
               <div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.sunrise")}</div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {formatInTimeZone(new Date(sunData.sunrise), sunData.timezone, 'HH:mm:ss')}
+                  {formatInTimeZone(new Date(sunData.sunrise), sunData.timezone, 'HH:mm')}
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
-              <FaMoon className="text-gray-600 dark:text-gray-400 mr-2" />
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4 transform transition-all hover:scale-105">
+              <div className="bg-indigo-100 dark:bg-indigo-900 p-3 rounded-full">
+                <FaMoon className="text-indigo-500 text-xl" />
+              </div>
               <div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.sunset")}</div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {formatInTimeZone(new Date(sunData.sunset), sunData.timezone, 'HH:mm:ss')}
+                  {formatInTimeZone(new Date(sunData.sunset), sunData.timezone, 'HH:mm')}
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
-              <FaClock className="text-blue-500 mr-2" />
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4 transform transition-all hover:scale-105">
+              <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
+                <FaClock className="text-blue-500 text-xl" />
+              </div>
               <div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.dayLength")}</div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {(sunData.day_length / 3600).toFixed(2)} {t("sunriseSunset.hours")}
+                  {(sunData.day_length / 3600).toFixed(1)} {t("sunriseSunset.hours")}
                 </div>
               </div>
             </div>
