@@ -16,7 +16,7 @@ import {
   Legend,
 } from "chart.js";
 
-// Important: Register all the pieces needed for bar charts
+// Register all necessary Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -40,23 +40,24 @@ export default function HistoricalData({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Simulate brief loading so chart doesn't flash
     const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Get user's chosen timezone from localStorage or default to UTC
+  // Decide on timezone (fallback to "UTC")
   const timezone = typeof window !== "undefined"
     ? localStorage.getItem("timezone") || "UTC"
     : "UTC";
 
-  // Construct an hourly timestamp from date + hour for each data point
+  // Build an array of labels based on date + hour
   const chartLabels = data.map((d) => {
     const dateObj = new Date(d.date);
     dateObj.setHours(d.hour, 0, 0, 0);
     return formatInTimeZone(dateObj, timezone, "HH:mm");
   });
 
-  // Define the chart data
+  // Prepare the data for bar chart
   const chartData = {
     labels: chartLabels,
     datasets: [
@@ -64,37 +65,48 @@ export default function HistoricalData({
         type: "bar",
         label: t("dashboard.temperature"),
         data: data.map((d) => d.averageTemperature),
-        backgroundColor: "rgba(54, 162, 235, 0.8)", // blue
+        backgroundColor: "rgba(54, 162, 235, 0.8)", // Blue
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
+        barThickness: 30,       // Force each bar's thickness (px)
+        maxBarThickness: 40,    // Max size a bar can grow to
       },
       {
         type: "bar",
         label: t("dashboard.humidity"),
         data: data.map((d) => d.averageHumidity),
-        backgroundColor: "rgba(75, 192, 192, 0.8)", // teal
+        backgroundColor: "rgba(75, 192, 192, 0.8)", // Teal
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
+        barThickness: 30,
+        maxBarThickness: 40,
       },
       {
         type: "bar",
         label: t("dashboard.gasValue"),
         data: data.map((d) => d.averageGasValue),
-        backgroundColor: "rgba(255, 99, 132, 0.8)", // pinkish red
+        backgroundColor: "rgba(255, 99, 132, 0.8)", // Pinkish red
         borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
+        barThickness: 30,
+        maxBarThickness: 40,
       },
     ],
   };
 
-  // Chart config options
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Let the container control height
     plugins: {
       legend: { position: "top" },
       title: {
         display: true,
         text: t("dashboard.averages"),
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true, // So bars start at 0
       },
     },
   };
@@ -125,7 +137,10 @@ export default function HistoricalData({
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
         </div>
       ) : data.length > 0 ? (
-        <Bar data={chartData} options={options} />
+        <div style={{ height: "300px" }}>
+          {/* Give the bar chart a fixed height so bars are always visible */}
+          <Bar data={chartData} options={options} />
+        </div>
       ) : (
         <div className="text-center py-8 text-gray-500">
           {t("dashboard.noData")}
