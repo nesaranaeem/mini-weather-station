@@ -3,7 +3,8 @@ import LoadingSpinner from "./LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
-import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon, FaClock } from "react-icons/fa";
+import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon, FaClock, FaCircle, FaMicrochip, FaMapMarkerAlt } from "react-icons/fa";
+import anime from 'animejs';
 import { getSunriseSunset } from "../utils/sunrise-sunset";
 import RadialMeter from "./RadialMeter";
 import HistoricalData from "./HistoricalData";
@@ -39,6 +40,15 @@ export default function WeatherDashboard() {
   };
 
   useEffect(() => {
+    // Animate the live dot
+    const animation = anime({
+      targets: '.live-dot',
+      opacity: [0.2, 1],
+      easing: 'easeInOutSine',
+      duration: 1000,
+      loop: true
+    });
+
     const fetchAllData = async () => {
       try {
         // Fetch sensor data
@@ -105,12 +115,29 @@ export default function WeatherDashboard() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           {t("dashboard.title")}
         </h1>
-        <div className="mt-2 text-gray-600 dark:text-gray-400 flex items-center justify-center">
-          {data.realtime?.length > 0 && formatInTimeZone(
-            new Date(data.realtime[data.realtime.length - 1].timestamp),
-            localStorage.getItem('timezone') || 'UTC',
-            "'Viewing data for' HH:mm, dd MMM yyyy"
-          )}
+        <div className="mt-2 text-gray-600 dark:text-gray-400">
+          <div className="flex items-center justify-center mb-2">
+            {data.realtime?.length > 0 && (
+              <>
+                <FaCircle className="text-green-500 mr-2 live-dot" style={{ fontSize: '8px' }} />
+                {formatInTimeZone(
+                  new Date(data.realtime[data.realtime.length - 1].timestamp),
+                  localStorage.getItem('timezone') || 'UTC',
+                  "'Viewing data for' HH:mm, dd MMM yyyy"
+                )}
+              </>
+            )}
+          </div>
+          <div className="flex items-center justify-center space-x-6 text-sm">
+            <div className="flex items-center">
+              <FaMapMarkerAlt className="mr-1" />
+              <span>{t("dashboard.sensorLocation")}</span>
+            </div>
+            <div className="flex items-center">
+              <FaMicrochip className="mr-1" />
+              <span>{t("dashboard.cpuType")}</span>
+            </div>
+          </div>
         </div>
       </div>
 

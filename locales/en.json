@@ -16,7 +16,9 @@
     "selectDate": "Select Date",
     "selectHour": "Select Hour",
     "availableRange": "Available data range",
-    "noDateRange": "No historical data available"
+    "noDateRange": "No historical data available",
+    "sensorLocation": "Sensor Location: Living Room",
+    "cpuType": "CPU: ESP8266"
   },
   "sunriseSunset": {
     "title": "Sunrise & Sunset",
