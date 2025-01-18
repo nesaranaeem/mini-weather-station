@@ -27,37 +27,11 @@ ChartJS.register(
 
 export default function HistoricalData({ data }) {
   const { t } = useTranslation();
-  const [dateRange, setDateRange] = useState({ min: null, max: null });
   const today = new Date();
-  const [selectedDate, setSelectedDate] = useState(
-    today.toISOString().split("T")[0]
-  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDateRange = async () => {
-      try {
-        const response = await fetch("/api/sensor-data", {
-          headers: {
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-          },
-        });
-        const result = await response.json();
-        if (result.dateRange) {
-          setDateRange({
-            min: result.dateRange.minDate,
-            max: result.dateRange.maxDate,
-          });
-          setSelectedDate(result.dateRange.maxDate);
-        }
-      } catch (error) {
-        console.error("Error fetching date range:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDateRange();
+    setLoading(false);
   }, []);
 
   const timezone = localStorage.getItem('timezone') || 'UTC';
@@ -101,36 +75,9 @@ export default function HistoricalData({ data }) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      {loading ? (
+      {loading && (
         <div className="flex justify-center items-center h-32">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
-        </div>
-      ) : dateRange.min && dateRange.max ? (
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-            {t("dashboard.selectDate")}
-          </label>
-          <div className="relative">
-            <DatePicker
-              selected={new Date(selectedDate)}
-              onChange={(date) =>
-                setSelectedDate(date.toISOString().split("T")[0])
-              }
-              minDate={new Date(dateRange.min)}
-              maxDate={new Date(dateRange.max)}
-              dateFormat="yyyy-MM-dd"
-              className="block w-full px-4 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              calendarClassName="bg-white dark:bg-gray-800 border dark:border-gray-700 shadow-lg rounded-lg"
-              showPopperArrow={false}
-            />
-            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              {t("dashboard.availableRange")}: {dateRange.min} - {dateRange.max}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="text-center py-4 text-gray-500">
-          {t("dashboard.noDateRange")}
         </div>
       )}
 
