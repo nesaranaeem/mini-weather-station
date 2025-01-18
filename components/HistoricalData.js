@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useTranslation } from "react-i18next";
 import { Bar } from "react-chartjs-2";
-import { format, parseISO } from "date-fns"; 
 import { formatInTimeZone } from "date-fns-tz";
 import {
   Chart as ChartJS,
@@ -17,11 +16,12 @@ import {
   Legend,
 } from "chart.js";
 
+// Important: Register all the pieces needed for bar charts
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,    // <-- Important for Bar charts
-  BarController, // <-- Also required for Bar charts
+  BarElement,
+  BarController,
   PointElement,
   LineElement,
   Title,
@@ -44,44 +44,50 @@ export default function HistoricalData({
     return () => clearTimeout(timer);
   }, []);
 
+  // Get user's chosen timezone from localStorage or default to UTC
   const timezone = typeof window !== "undefined"
     ? localStorage.getItem("timezone") || "UTC"
     : "UTC";
 
-  // Build a Date object from each record's `date` + `hour`
+  // Construct an hourly timestamp from date + hour for each data point
   const chartLabels = data.map((d) => {
     const dateObj = new Date(d.date);
     dateObj.setHours(d.hour, 0, 0, 0);
     return formatInTimeZone(dateObj, timezone, "HH:mm");
   });
 
+  // Define the chart data
   const chartData = {
     labels: chartLabels,
     datasets: [
       {
+        type: "bar",
         label: t("dashboard.temperature"),
         data: data.map((d) => d.averageTemperature),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        tension: 0.1,
+        backgroundColor: "rgba(54, 162, 235, 0.8)", // blue
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
       },
       {
+        type: "bar",
         label: t("dashboard.humidity"),
         data: data.map((d) => d.averageHumidity),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.2)",
-        tension: 0.1,
+        backgroundColor: "rgba(75, 192, 192, 0.8)", // teal
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
       },
       {
+        type: "bar",
         label: t("dashboard.gasValue"),
         data: data.map((d) => d.averageGasValue),
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        tension: 0.1,
+        backgroundColor: "rgba(255, 99, 132, 0.8)", // pinkish red
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
       },
     ],
   };
 
+  // Chart config options
   const options = {
     responsive: true,
     plugins: {
@@ -127,4 +133,4 @@ export default function HistoricalData({
       )}
     </div>
   );
-        }
+}
