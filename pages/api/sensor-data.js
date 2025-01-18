@@ -1,7 +1,7 @@
-import dbConnect from '../../utils/mongodb';
-import SensorData from '../../models/SensorData';
-import HourlySensorData from '../../models/HourlySensorData';
-import { verifyApiKey } from '../../utils/auth';
+import dbConnect from "../../utils/mongodb";
+import SensorData from "../../models/SensorData";
+import HourlySensorData from "../../models/HourlySensorData";
+import { verifyApiKey } from "../../utils/auth";
 
 // Global variable to store real-time data with timestamp
 let realTimeData = [];
@@ -9,36 +9,36 @@ const MAX_REALTIME_ENTRIES = 100;
 let lastData = null;
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     // Always verify API key
-    const apiKey = req.headers['x-api-key'];
+    const apiKey = req.headers["x-api-key"];
     if (!verifyApiKey(apiKey)) {
-      console.warn('Unauthorized access attempt');
-      return res.status(401).json({ 
-        message: 'Unauthorized - Valid API key required',
-        code: 'INVALID_API_KEY'
+      console.warn("Unauthorized access attempt");
+      return res.status(401).json({
+        message: "Unauthorized - Valid API key required",
+        code: "INVALID_API_KEY",
       });
     }
-    
+
     try {
       await dbConnect();
-      
+
       const { date, hour } = req.query;
-      
+
       if (date && hour) {
         // Get specific hourly data
         const startOfDay = new Date(date);
         const hourlyData = await HourlySensorData.findOne({
           date: startOfDay,
-          hour: parseInt(hour)
+          hour: parseInt(hour),
         });
-        
-        return res.status(200).json({ 
+
+        return res.status(200).json({
           hourlyData,
-          realtime: realTimeData 
+          realtime: realTimeData,
         });
       }
-      
+
       // Get latest hourly averages
       // Get available dates range
       const dateRange = await HourlySensorData.aggregate([
@@ -46,78 +46,88 @@ export default async function handler(req, res) {
           $group: {
             _id: null,
             minDate: { $min: "$date" },
-            maxDate: { $max: "$date" }
-          }
-        }
+            maxDate: { $max: "$date" },
+          },
+        },
       ]);
 
       const queryDate = req.query.date ? new Date(req.query.date) : new Date();
       queryDate.setHours(0, 0, 0, 0);
-      
-      console.log('Fetching hourly averages for date:', queryDate);
-      
+
+      console.log("Fetching hourly averages for date:", queryDate);
+
       const hourlyAverages = await HourlySensorData.find({
-        date: queryDate
+        date: queryDate,
       }).sort({ hour: 1 });
-      
-      console.log('Found hourly averages:', hourlyAverages);
-      console.log('Current realtime data:', realTimeData);
+
+      console.log("Found hourly averages:", hourlyAverages);
+      console.log("Current realtime data:", realTimeData);
 
       // If no realtime data exists, get the latest sensor reading
       if (!realTimeData.length) {
-        const latestReading = await SensorData.findOne().sort({ createdAt: -1 });
+        const latestReading = await SensorData.findOne().sort({
+          createdAt: -1,
+        });
         if (latestReading) {
-          realTimeData = [{ ...latestReading.toObject(), timestamp: latestReading.createdAt }];
-          console.log('Added latest sensor reading to realtime data:', latestReading);
+          realTimeData = [
+            { ...latestReading.toObject(), timestamp: latestReading.createdAt },
+          ];
+          console.log(
+            "Added latest sensor reading to realtime data:",
+            latestReading
+          );
         }
       }
-      
+
       // Initialize empty arrays if no data exists
       const response = {
         hourlyAverages: hourlyAverages || [],
         realtime: realTimeData || [],
-        dateRange: dateRange.length ? {
-          minDate: dateRange[0].minDate.toISOString().split('T')[0],
-          maxDate: dateRange[0].maxDate.toISOString().split('T')[0]
-        } : null
+        dateRange: dateRange.length
+          ? {
+              minDate: dateRange[0].minDate.toISOString().split("T")[0],
+              maxDate: dateRange[0].maxDate.toISOString().split("T")[0],
+            }
+          : null,
       };
-      
-      console.log('Sending response:', response);
+
+      console.log("Sending response:", response);
       return res.status(200).json(response);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: 'Error fetching sensor data' });
+      return res.status(500).json({ message: "Error fetching sensor data" });
     }
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
     // Verify API key
-    const apiKey = req.headers['x-api-key'];
+    const apiKey = req.headers["x-api-key"];
     if (!verifyApiKey(apiKey)) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     await dbConnect();
-    
+
     const { temperature, humidity, gasValue, soundDetected } = req.body;
-    
+
     // Create new sensor data entry
     const sensorData = new SensorData({
       temperature,
       humidity,
       gasValue,
-      soundDetected
+      soundDetected,
     });
 
     // Save to database
     const savedData = await sensorData.save();
 
     // Only update real-time data if values have changed
-    const hasChanged = !lastData || 
+    const hasChanged =
+      !lastData ||
       lastData.temperature !== temperature ||
       lastData.humidity !== humidity ||
       lastData.gasValue !== gasValue ||
@@ -126,7 +136,7 @@ export default async function handler(req, res) {
     if (hasChanged) {
       realTimeData.push({
         ...savedData.toObject(),
-        timestamp: new Date()
+        timestamp: new Date(),
       });
       if (realTimeData.length > MAX_REALTIME_ENTRIES) {
         realTimeData.shift();
@@ -142,7 +152,7 @@ export default async function handler(req, res) {
     // Find or create hourly record
     let hourlyData = await HourlySensorData.findOne({
       date: startOfDay,
-      hour: currentHour
+      hour: currentHour,
     });
 
     if (!hourlyData) {
@@ -153,24 +163,27 @@ export default async function handler(req, res) {
         averageTemperature: temperature,
         averageHumidity: humidity,
         averageGasValue: gasValue,
-        soundEvents: soundDetected ? 1 : 0
+        soundEvents: soundDetected ? 1 : 0,
       });
     } else {
       // Get all readings for current hour
       const hourlyReadings = await SensorData.find({
         createdAt: {
           $gte: new Date(now.setHours(currentHour, 0, 0, 0)),
-          $lt: new Date(now.setHours(currentHour + 1, 0, 0, 0))
-        }
+          $lt: new Date(now.setHours(currentHour + 1, 0, 0, 0)),
+        },
       });
 
       // Calculate averages
-      const totals = hourlyReadings.reduce((acc, reading) => ({
-        temperature: acc.temperature + reading.temperature,
-        humidity: acc.humidity + reading.humidity,
-        gasValue: acc.gasValue + reading.gasValue,
-        soundEvents: acc.soundEvents + (reading.soundDetected ? 1 : 0)
-      }), { temperature: 0, humidity: 0, gasValue: 0, soundEvents: 0 });
+      const totals = hourlyReadings.reduce(
+        (acc, reading) => ({
+          temperature: acc.temperature + reading.temperature,
+          humidity: acc.humidity + reading.humidity,
+          gasValue: acc.gasValue + reading.gasValue,
+          soundEvents: acc.soundEvents + (reading.soundDetected ? 1 : 0),
+        }),
+        { temperature: 0, humidity: 0, gasValue: 0, soundEvents: 0 }
+      );
 
       const count = hourlyReadings.length;
       hourlyData.averageTemperature = totals.temperature / count;
@@ -181,14 +194,13 @@ export default async function handler(req, res) {
 
     await hourlyData.save();
 
-    res.status(200).json({ 
-      success: true, 
+    res.status(200).json({
+      success: true,
       data: savedData,
-      realtime: realTimeData
+      realtime: realTimeData,
     });
-    
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error saving sensor data' });
+    res.status(500).json({ message: "Error saving sensor data" });
   }
 }
