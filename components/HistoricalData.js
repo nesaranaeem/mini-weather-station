@@ -77,10 +77,7 @@ export default function HistoricalData({ data }) {
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
       <h2 className="text-xl font-semibold mb-6 text-center">
         <span className="block text-gray-900 dark:text-white">
-          {t("dashboard.averages")}
-        </span>
-        <span className="block text-sm text-gray-600 dark:text-gray-400 mt-1">
-          {i18n.language === 'en' ? 'ঘণ্টার গড়' : 'Hourly Averages'}
+          {i18n.language === 'en' ? 'Hourly Averages' : 'ঘণ্টার গড়'}
         </span>
       </h2>
       {loading && (

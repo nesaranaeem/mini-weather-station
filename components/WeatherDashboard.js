@@ -237,27 +237,17 @@ export default function WeatherDashboard() {
 
       <div className="mb-8">
         <div className="flex justify-center items-center mb-4">
-          <select
-            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
-            onChange={(e) => {
-              const selectedDate = new Date(e.target.value);
-              // Fetch data for selected date
-              fetchDataForDate(selectedDate);
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => {
+              setSelectedDate(date);
+              fetchDataForDate(date);
             }}
-            value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
-          >
-            {data.dateRange && Array.from({ 
-              length: (new Date(data.dateRange.maxDate) - new Date(data.dateRange.minDate)) / (1000 * 60 * 60 * 24) + 1 
-            }).map((_, index) => {
-              const date = new Date(data.dateRange.minDate);
-              date.setDate(date.getDate() + index);
-              return (
-                <option key={date.toISOString()} value={date.toISOString().split('T')[0]}>
-                  {formatInTimeZone(date, localStorage.getItem('timezone') || 'UTC', 'dd MMM yyyy')}
-                </option>
-              );
-            })}
-          </select>
+            minDate={data.dateRange ? new Date(data.dateRange.minDate) : null}
+            maxDate={data.dateRange ? new Date(data.dateRange.maxDate) : null}
+            dateFormat="dd MMM yyyy"
+            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-700 dark:text-gray-200"
+          />
         </div>
         <HistoricalData data={data.hourlyAverages} />
       </div>
