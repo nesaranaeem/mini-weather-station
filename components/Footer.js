@@ -24,7 +24,7 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} Weather Station Dashboard
             </p>
             <p className="text-sm mt-1">
-              Designed & Developed by Nesar Ahmed Naeem
+              Designed & Developed by <a href="https://nesaran.com" rel="nofollow" target="_blank" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">Nesar Ahmed Naeem</a>
             </p>
           </div>
         </div>
