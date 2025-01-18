@@ -130,12 +130,16 @@ export default function WeatherDashboard() {
 
   return (
     <div className="container mx-auto p-4 dark:bg-gray-950">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="text-center mb-8 relative overflow-hidden p-8 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <h1 className="text-4xl font-bold text-white mb-4 relative z-10 animate-title">
           {t("dashboard.title")}
         </h1>
-        <div className="mt-2 text-gray-600 dark:text-gray-400">
-          <div className="flex items-center justify-center mb-2">
+        <p className="text-sm text-white/80 mb-4 relative z-10">
+          Developed and coded by Nesar Ahmed Naeem
+        </p>
+        <div className="mt-2 text-white/90 relative z-10">
+          <div className="flex items-center justify-center mb-2 animate-fadeIn">
             {data.realtime?.length > 0 && (
               <>
                 <FaCircle className="text-green-500 mr-2 live-dot" style={{ fontSize: '8px' }} />

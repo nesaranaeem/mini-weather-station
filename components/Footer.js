@@ -1,12 +1,33 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+
 export default function Footer() {
   return (
     <footer className="bg-white dark:bg-gray-800 shadow-md mt-8">
-      <div className="container mx-auto px-4 py-6">
-        <div className="text-center text-gray-600 dark:text-gray-300">
-          <p>
-            &copy; {new Date().getFullYear()} Weather Station Dashboard. By
-            Nesar
-          </p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="flex space-x-6">
+            <a href="https://facebook.com/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 transition-colors">
+              <FontAwesomeIcon icon={faFacebook} size="lg" />
+            </a>
+            <a href="https://github.com/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-gray-800 dark:text-gray-200 hover:text-gray-600 transition-colors">
+              <FontAwesomeIcon icon={faGithub} size="lg" />
+            </a>
+            <a href="https://instagram.com/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-700 transition-colors">
+              <FontAwesomeIcon icon={faInstagram} size="lg" />
+            </a>
+            <a href="https://linkedin.com/in/nesaranaeem" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-600 transition-colors">
+              <FontAwesomeIcon icon={faLinkedin} size="lg" />
+            </a>
+          </div>
+          <div className="text-center text-gray-600 dark:text-gray-300">
+            <p className="font-medium">
+              &copy; {new Date().getFullYear()} Weather Station Dashboard
+            </p>
+            <p className="text-sm mt-1">
+              Designed & Developed by Nesar Ahmed Naeem
+            </p>
+          </div>
         </div>
       </div>
     </footer>
