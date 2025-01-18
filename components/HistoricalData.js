@@ -108,7 +108,9 @@ export default function HistoricalData({ data }) {
           <div className="relative">
             <DatePicker
               selected={new Date(selectedDate)}
-              onChange={(date) => setSelectedDate(date.toISOString().split('T')[0])}
+              onChange={(date) =>
+                setSelectedDate(date.toISOString().split("T")[0])
+              }
               minDate={new Date(dateRange.min)}
               maxDate={new Date(dateRange.max)}
               dateFormat="yyyy-MM-dd"
