@@ -3,6 +3,7 @@ import "../utils/i18n";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import LanguageTimeZoneModal from "../components/LanguageTimeZoneModal";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function App({ Component, pageProps }) {
@@ -42,6 +43,15 @@ export default function App({ Component, pageProps }) {
     setDarkMode(!darkMode);
   };
 
+  const handlePreferencesSave = (language, timezone) => {
+    i18n.changeLanguage(language);
+    setShowPreferences(false);
+  };
+
+  if (!initialized) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 flex flex-col">
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -49,6 +59,11 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </main>
       <Footer />
+      <LanguageTimeZoneModal 
+        isOpen={showPreferences}
+        onClose={() => setShowPreferences(false)}
+        onSave={handlePreferencesSave}
+      />
     </div>
   );
 }

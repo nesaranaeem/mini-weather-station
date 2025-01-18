@@ -17,5 +17,13 @@
     "selectHour": "Select Hour",
     "availableRange": "Available data range",
     "noDateRange": "No historical data available"
+  },
+  "preferences": {
+    "welcome": "Welcome to Weather Station",
+    "selectPreferences": "Please select your preferences",
+    "language": "Language",
+    "timezone": "Time Zone",
+    "save": "Save Preferences",
+    "description": "These settings can be changed later in the settings menu"
   }
 }
