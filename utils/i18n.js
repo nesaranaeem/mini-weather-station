@@ -5,6 +5,7 @@ import enTranslations from "../locales/en.json";
 import bnTranslations from "../locales/bn.json";
 
 const defaultLanguage = "en";
+const storedLanguage = typeof window !== "undefined" ? localStorage.getItem("preferredLanguage") : defaultLanguage;
 
 i18n.use(initReactI18next).init({
   resources: {
