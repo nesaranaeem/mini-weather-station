@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useTranslation } from "react-i18next";
 import { Bar } from "react-chartjs-2";
-import { format, parseISO } from "date-fns";
-import { formatInTimeZone } from "date-fns-tz";
+import { format, parseISO } from "date-fns/format";
+import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
 import {
   Chart as ChartJS,
   CategoryScale,

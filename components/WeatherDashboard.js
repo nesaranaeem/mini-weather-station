@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { formatInTimeZone } from "date-fns-tz";
+import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
 import { FaThermometerHalf, FaTint, FaWind } from "react-icons/fa";
 import RadialMeter from "./RadialMeter";
 import HistoricalData from "./HistoricalData";
