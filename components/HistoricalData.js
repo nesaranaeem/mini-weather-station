@@ -26,12 +26,12 @@ ChartJS.register(
 );
 
 export default function HistoricalData({ data }) {
-  const { t } = useTranslation();
-  const today = new Date();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(false);
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
   }, []);
 
   const timezone = localStorage.getItem('timezone') || 'UTC';
@@ -75,6 +75,14 @@ export default function HistoricalData({ data }) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <h2 className="text-xl font-semibold mb-6 text-center">
+        <span className="block text-gray-900 dark:text-white">
+          {t("dashboard.averages")}
+        </span>
+        <span className="block text-sm text-gray-600 dark:text-gray-400 mt-1">
+          {i18n.language === 'en' ? 'ঘণ্টার গড়' : 'Hourly Averages'}
+        </span>
+      </h2>
       {loading && (
         <div className="flex justify-center items-center h-32">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
