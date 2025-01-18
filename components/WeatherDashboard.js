@@ -54,7 +54,7 @@ export default function WeatherDashboard() {
 
   useEffect(() => {
     // Animate the live dot
-    const animation = anime({
+    anime({
       targets: ".live-dot",
       opacity: [0.2, 1],
       easing: "easeInOutSine",
@@ -124,7 +124,9 @@ export default function WeatherDashboard() {
         </p>
       </div>
     );
+
   if (error) return <div className="text-center p-8 text-red-500">{error}</div>;
+
   if (!data || (!data.realtime?.length && !data.hourlyAverages?.length)) {
     return <div className="text-center p-8">{t("dashboard.noData")}</div>;
   }
@@ -137,10 +139,7 @@ export default function WeatherDashboard() {
         gasValue: 0,
         soundDetected: false,
       };
-  const realFeel = calculateRealFeel(
-    latestData.temperature,
-    latestData.humidity
-  );
+  const realFeel = calculateRealFeel(latestData.temperature, latestData.humidity);
   const gasType = identifyGas(latestData.gasValue);
 
   return (
@@ -163,9 +162,7 @@ export default function WeatherDashboard() {
                 />
                 <span className="text-xs md:text-sm">
                   {formatInTimeZone(
-                    new Date(
-                      data.realtime[data.realtime.length - 1].timestamp
-                    ),
+                    new Date(data.realtime[data.realtime.length - 1].timestamp),
                     localStorage.getItem("timezone") || "UTC",
                     "'Viewing data for' HH:mm, dd MMM yyyy"
                   )}
@@ -248,15 +245,16 @@ export default function WeatherDashboard() {
             </span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Sunrise */}
             <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4">
               <div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full">
                 <FaSun className="text-yellow-500 text-xl" />
               </div>
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-black dark:text-white">
                   {t("sunriseSunset.sunrise")}
                 </div>
-                <div className="text-lg font-semibold dark:text-white">
+                <div className="text-lg font-semibold text-black dark:text-white">
                   {formatInTimeZone(
                     new Date(sunData.sunrise),
                     sunData.timezone,
@@ -265,15 +263,17 @@ export default function WeatherDashboard() {
                 </div>
               </div>
             </div>
+
+            {/* Sunset */}
             <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4">
               <div className="bg-indigo-100 dark:bg-indigo-900 p-3 rounded-full">
                 <FaMoon className="text-indigo-500 text-xl" />
               </div>
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-black dark:text-white">
                   {t("sunriseSunset.sunset")}
                 </div>
-                <div className="text-lg font-semibold dark:text-white">
+                <div className="text-lg font-semibold text-black dark:text-white">
                   {formatInTimeZone(
                     new Date(sunData.sunset),
                     sunData.timezone,
@@ -282,15 +282,17 @@ export default function WeatherDashboard() {
                 </div>
               </div>
             </div>
+
+            {/* Day Length */}
             <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-4">
               <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
                 <FaClock className="text-blue-500 text-xl" />
               </div>
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-black dark:text-white">
                   {t("sunriseSunset.dayLength")}
                 </div>
-                <div className="text-lg font-semibold dark:text-white">
+                <div className="text-lg font-semibold text-black dark:text-white">
                   {(sunData.day_length / 3600).toFixed(1)}{" "}
                   {t("sunriseSunset.hours")}
                 </div>
@@ -344,9 +346,7 @@ export default function WeatherDashboard() {
   );
 }
 
-// ---------------------
-// Utility Functions
-// ---------------------
+/** Utility Functions */
 function calculateRealFeel(temperature, humidity) {
   // Heat index calculation using Steadman's formula
   const T = temperature;
@@ -378,4 +378,4 @@ function identifyGas(value) {
   if (value <= 500) return "Methane";
   if (value <= 700) return "Smoke";
   return "High Gas";
-                  }
+            }
