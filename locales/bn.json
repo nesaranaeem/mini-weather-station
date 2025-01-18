@@ -1,7 +1,7 @@
 {
   "dashboard": {
     "title": "আবহাওয়া স্টেশন ড্যাশবোর্ড",
-    "realTimeIndicator": "সরাসরি তথ্য প্রদর্শিত হচ্ছে",
+    "realTimeIndicator": "%{time} এর জন্য তথ্য দেখা হচ্ছে",
     "realtime": "রিয়েল-টাইম ডেটা",
     "historical": "ঐতিহাসিক তথ্য",
     "noData": "কোন তথ্য পাওয়া যায়নি",

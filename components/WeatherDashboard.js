@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Line } from "react-chartjs-2";
+import { formatInTimeZone } from "date-fns-tz";
 import { FaThermometerHalf, FaTint, FaWind } from "react-icons/fa";
 import RadialMeter from "./RadialMeter";
 import HistoricalData from "./HistoricalData";
@@ -75,12 +75,13 @@ export default function WeatherDashboard() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           {t("dashboard.title")}
         </h1>
-        {isRealTime && (
-          <div className="mt-2 text-green-600 dark:text-green-400 flex items-center justify-center">
-            <div className="w-2 h-2 bg-green-600 dark:bg-green-400 rounded-full mr-2 animate-pulse"></div>
-            {t("dashboard.realTimeIndicator")}
-          </div>
-        )}
+        <div className="mt-2 text-gray-600 dark:text-gray-400 flex items-center justify-center">
+          {formatInTimeZone(
+            new Date(data.timestamp),
+            localStorage.getItem('timezone') || 'UTC',
+            "'Viewing data for' HH:mm, dd MMM yyyy"
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-black">

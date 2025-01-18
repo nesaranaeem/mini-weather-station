@@ -1,7 +1,7 @@
 {
   "dashboard": {
     "title": "Weather Station Dashboard",
-    "realTimeIndicator": "Viewing Real-Time Data",
+    "realTimeIndicator": "Viewing data for %{time}",
     "realtime": "Real-time Data",
     "historical": "Historical Data",
     "noData": "No data available",

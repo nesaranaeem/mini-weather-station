@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useTranslation } from "react-i18next";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
+import { format, parseISO } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -57,8 +59,10 @@ export default function HistoricalData({ data }) {
     fetchDateRange();
   }, []);
 
+  const timezone = localStorage.getItem('timezone') || 'UTC';
+  
   const chartData = {
-    labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+    labels: data.map(d => formatInTimeZone(new Date(d.timestamp), timezone, 'HH:mm')),
     datasets: [
       {
         label: t("dashboard.temperature"),
@@ -130,7 +134,7 @@ export default function HistoricalData({ data }) {
       )}
 
       {data.length > 0 ? (
-        <Line data={chartData} options={options} />
+        <Bar data={chartData} options={options} />
       ) : (
         <div className="text-center py-8 text-gray-500">
           {t("dashboard.noData")}
