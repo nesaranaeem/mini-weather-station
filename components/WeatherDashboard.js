@@ -130,34 +130,36 @@ export default function WeatherDashboard() {
 
   return (
     <div className="container mx-auto p-4 dark:bg-gray-950">
-      <div className="text-center mb-8 relative overflow-hidden p-8 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+      <div className="text-center mb-4 md:mb-8 relative overflow-hidden p-4 md:p-8 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
         <div className="absolute inset-0 bg-black opacity-10"></div>
-        <h1 className="text-4xl font-bold text-white mb-4 relative z-10 animate-title">
+        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 relative z-10 animate-title">
           {t("dashboard.title")}
         </h1>
-        <p className="text-sm text-white/80 mb-4 relative z-10">
+        <p className="text-xs md:text-sm text-white/80 mb-2 md:mb-4 relative z-10">
           Developed and coded by Nesar Ahmed Naeem
         </p>
-        <div className="mt-2 text-white/90 relative z-10">
-          <div className="flex items-center justify-center mb-2 animate-fadeIn">
+        <div className="mt-1 md:mt-2 text-white/90 relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-center mb-2 animate-fadeIn space-y-2 md:space-y-0">
             {data.realtime?.length > 0 && (
-              <>
+              <div className="flex items-center justify-center">
                 <FaCircle className="text-green-500 mr-2 live-dot" style={{ fontSize: '8px' }} />
-                {formatInTimeZone(
-                  new Date(data.realtime[data.realtime.length - 1].timestamp),
-                  localStorage.getItem('timezone') || 'UTC',
-                  "'Viewing data for' HH:mm, dd MMM yyyy"
-                )}
-              </>
+                <span className="text-xs md:text-sm">
+                  {formatInTimeZone(
+                    new Date(data.realtime[data.realtime.length - 1].timestamp),
+                    localStorage.getItem('timezone') || 'UTC',
+                    "'Viewing data for' HH:mm, dd MMM yyyy"
+                  )}
+                </span>
+              </div>
             )}
           </div>
-          <div className="flex items-center justify-center space-x-6 text-sm">
-            <div className="flex items-center">
-              <FaMapMarkerAlt className="mr-1" />
+          <div className="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-6 text-xs md:text-sm">
+            <div className="flex items-center whitespace-nowrap">
+              <FaMapMarkerAlt className="mr-1 text-xs md:text-sm" />
               <span>{t("dashboard.sensorLocation")}</span>
             </div>
-            <div className="flex items-center">
-              <FaMicrochip className="mr-1" />
+            <div className="flex items-center whitespace-nowrap">
+              <FaMicrochip className="mr-1 text-xs md:text-sm" />
               <span>{t("dashboard.cpuType")}</span>
             </div>
           </div>
