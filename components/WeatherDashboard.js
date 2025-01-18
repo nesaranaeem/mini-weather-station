@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { formatInTimeZone } from "date-fns-tz/formatInTimeZone";
-import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon } from "react-icons/fa";
+import { FaThermometerHalf, FaTint, FaWind, FaSun, FaMoon, FaClock } from "react-icons/fa";
 import { getSunriseSunset } from "../utils/sunrise-sunset";
 import RadialMeter from "./RadialMeter";
 import HistoricalData from "./HistoricalData";
@@ -119,30 +119,42 @@ export default function WeatherDashboard() {
       {sunData && (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4 dark:text-white flex items-center">
-            <FaSun className="mr-2" /> Sunrise & Sunset
+            <FaSun className="mr-2" /> {t("sunriseSunset.title")}
             <span className="text-sm font-normal ml-2 text-gray-600 dark:text-gray-400">
-              (Timezone: {sunData.timezone})
+              ({t("sunriseSunset.timezone")}: {sunData.timezone})
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center">
               <FaSun className="text-yellow-500 mr-2" />
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Sunrise</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.sunrise")}</div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {new Date(sunData.sunrise).toLocaleTimeString()}
+                  {formatInTimeZone(new Date(sunData.sunrise), sunData.timezone, 'HH:mm:ss')}
                 </div>
               </div>
             </div>
             <div className="flex items-center">
               <FaMoon className="text-gray-600 dark:text-gray-400 mr-2" />
               <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Sunset</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.sunset")}</div>
                 <div className="text-lg font-semibold dark:text-white">
-                  {new Date(sunData.sunset).toLocaleTimeString()}
+                  {formatInTimeZone(new Date(sunData.sunset), sunData.timezone, 'HH:mm:ss')}
                 </div>
               </div>
             </div>
+            <div className="flex items-center">
+              <FaClock className="text-blue-500 mr-2" />
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t("sunriseSunset.dayLength")}</div>
+                <div className="text-lg font-semibold dark:text-white">
+                  {(sunData.day_length / 3600).toFixed(2)} {t("sunriseSunset.hours")}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 text-center">
+            {t("sunriseSunset.dataSource")}
           </div>
         </div>
       )}

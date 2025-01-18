@@ -18,6 +18,15 @@
     "availableRange": "Available data range",
     "noDateRange": "No historical data available"
   },
+  "sunriseSunset": {
+    "title": "Sunrise & Sunset",
+    "timezone": "Timezone",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "dayLength": "Day Length",
+    "dataSource": "Data provided by sunrise-sunset.org",
+    "hours": "hours"
+  },
   "preferences": {
     "welcome": "Welcome to Weather Station",
     "selectPreferences": "Please select your preferences",

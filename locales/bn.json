@@ -18,6 +18,15 @@
     "availableRange": "উপলব্ধ তথ্যের সময়কাল",
     "noDateRange": "কোন ঐতিহাসিক তথ্য পাওয়া যায়নি"
   },
+  "sunriseSunset": {
+    "title": "সূর্যোদয় এবং সূর্যাস্ত",
+    "timezone": "সময় অঞ্চল",
+    "sunrise": "সূর্যোদয়",
+    "sunset": "সূর্যাস্ত",
+    "dayLength": "দিনের দৈর্ঘ্য",
+    "dataSource": "তথ্যসূত্র: sunrise-sunset.org",
+    "hours": "ঘণ্টা"
+  },
   "preferences": {
     "welcome": "আবহাওয়া স্টেশনে স্বাগতম",
     "selectPreferences": "আপনার পছন্দগুলি নির্বাচন করুন",
